@@ -9,12 +9,12 @@ Pod::Spec.new do |s|
   s.description  = <<-DESC
                   react-native-unity-view
                    DESC
-  s.homepage     = "https://github.com/asmadsen/react-native-unity-view"
+  s.homepage     = "https://github.com/IH0kN3m/react-native-unity-view"
   s.license      = "MIT"
   # s.license    = { :type => "MIT", :file => "LICENSE" }
-  s.authors      = { "Andreas Storesund Madsen" => "andreas@asmadsen.no" }
-  s.platforms    = { :ios => "9.0", :tvos => "10.0" }
-  s.source       = { :git => "https://github.com/asmadsen/react-native-unity-view.git", :tag => "#{s.version}" }
+  s.authors      = { "Michael Myers" => "ih0kn3m@gmail.com" }
+  s.platforms    = { :ios => "13.0", :tvos => "13.0" }
+  s.source       = { :git => "https://github.com/IH0kN3m/react-native-unity-view.git", :tag => "#{s.version}" }
 
   s.source_files = "ios/**/*.{h,m,mm}"
   s.public_header_files = 'ios/**/*.h'

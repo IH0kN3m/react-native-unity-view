@@ -25,11 +25,6 @@ public class Build : MonoBehaviour {
         Copy(Path.Combine(apkPath, "launcher/src/main/res"), Path.Combine(androidExportPath, "src/main/res"));
     }
 
-    [MenuItem("ReactNative/Export Android legacy %&a", false, 2)]
-    public static void DoBuildAndroidLegacy() {
-        DoBuildAndroid(Path.Combine(apkPath, Application.productName));
-    }
-
     public static void DoBuildAndroid(String buildPath) {
         if (Directory.Exists(apkPath)) {
             Directory.Delete(apkPath, true);
@@ -40,7 +35,7 @@ public class Build : MonoBehaviour {
 
         EditorUserBuildSettings.androidBuildSystem = AndroidBuildSystem.Gradle;
 
-        var options = BuildOptions.AcceptExternalModificationsToPlayer;
+        var options = BuildOptions.None;
         var report = BuildPipeline.BuildPlayer(
             GetEnabledScenes(),
             apkPath,
@@ -62,6 +57,11 @@ public class Build : MonoBehaviour {
         build_text = build_text.Replace("enableSplit = false", "enable false");
         build_text = build_text.Replace("enableSplit = true", "enable true");
         build_text = build_text.Replace("implementation fileTree(dir: 'libs', include: ['*.jar'])", "implementation ':unity-classes'");
+        build_text = build_text.Replace("doNotStrip \"*/arm64-v8a/*.so\"", "doNotStrip \"*/arm64-v8a/*.so\"\nexclude \"lib/arm64-v8a/libc++_shared.so\"\nexclude \"lib/armeabi-v7a/libc++_shared.so\"");
+        build_text = build_text.Replace("if (project(':unityLibrary').tasks.findByName('mergeDebugJniLibFolders'))", "if (project(':UnityExport').tasks.findByName('mergeDebugJniLibFolders'))");
+        build_text = build_text.Replace("project(':unityLibrary').mergeDebugJniLibFolders.dependsOn BuildIl2CppTask", "project(':UnityExport').mergeDebugJniLibFolders.dependsOn BuildIl2CppTask");
+        build_text = build_text.Replace("if (project(':unityLibrary').tasks.findByName('mergeReleaseJniLibFolders'))", "if (project(':UnityExport').tasks.findByName('mergeReleaseJniLibFolders'))");
+        build_text = build_text.Replace("project(':unityLibrary').mergeReleaseJniLibFolders.dependsOn BuildIl2CppTask", "project(':UnityExport').mergeReleaseJniLibFolders.dependsOn BuildIl2CppTask");
         build_text = Regex.Replace(build_text, @"\n.*applicationId '.+'.*\n", "\n");
         File.WriteAllText(build_file, build_text);
 

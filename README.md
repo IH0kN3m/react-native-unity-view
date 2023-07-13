@@ -2,18 +2,13 @@
 
 Integrate unity3d within a React Native app. Add a react native component to show unity. Works on both iOS and Android.
 
-__*If you're using a Unity version older than 2019.3 you can only export to android*__
-
 ## Notice
 
-This is a fork of [https://github.com/f111fei/react-native-unity-view](https://github.com/f111fei/react-native-unity-view)
-to make it work with React Native >= 0.60.
-
-**This project may or may not be updated depending on the further use of it at my workplace, however feel free to fork it** 
+This is a fork of [https://github.com/asmadsen/react-native-unity-view](https://github.com/asmadsen/react-native-unity-view) updated to support Unity 2023.1.3f1.
 
 ## Install
 
-`yarn add @asmadsen/react-native-unity-view`
+`yarn add @ih0kn3m/react-native-unity-view`
 
 ## Configuration
 
@@ -51,20 +46,19 @@ the Untiy Project*
 
 1. Open your Unity Project
 2. Go to Player settings (File => Build Settings => Player Settings)
-3. Change `Product Name` to the name of your Xcode project. (`ios/${XcodeProjectName}.xcodeproj`)
 
-##### Additional changes for Android Platform
+##### Changes for Android Platform
 
 Under `Other Settings` make sure `Scripting Backend` is set to `IL2CPP`, and `ARM64` is checked under `Target Architectures`.
 
 ![Android Configruation](docs/android-player-settings.png) 
 
-Under `Other Settings` make sure `Auto Graphics API` is unchecked, and the list only contains `OpenGLES3` and `OpenGLES2` in that order.
+Under `Other Settings` make sure `Auto Graphics API` is unchecked, and the list only contains `OpenGLES3`.
 
 ![Android graphics](docs/android-graphics.png) 
  
 
-##### Additional changes for iOS Platform
+##### Changes for iOS Platform
 
 Under `Other Settings` make sure `Auto Graphics API` is checked.
 

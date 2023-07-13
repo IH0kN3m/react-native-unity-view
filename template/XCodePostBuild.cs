@@ -28,7 +28,7 @@ using UnityEditor.Callbacks;
 using UnityEditor.iOS.Xcode;
 
 public static class XcodePostBuild {
-    private const string TouchedMarker = "https://github.com/asmadsen/react-native-unity-view";
+    private const string TouchedMarker = "https://github.com/IH0kN3m/react-native-unity-view";
 
     [PostProcessBuild]
     public static void OnPostBuild(BuildTarget target, string pathToBuiltProject) {
