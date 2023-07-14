@@ -1,4 +1,4 @@
-package no.asmadsen.unity.view;
+package no.ih0kn3m.unity.view;
 
 import android.os.Handler;
 import android.view.View;
