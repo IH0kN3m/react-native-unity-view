@@ -36,6 +36,7 @@ android {
     defaultConfig {
         minSdkVersion safeExtGet('minSdkVersion', DEFAULT_MIN_SDK_VERSION)
         targetSdkVersion safeExtGet('targetSdkVersion', DEFAULT_TARGET_SDK_VERSION)
+
         versionCode 1
         versionName "1.0"
     }
@@ -64,6 +65,7 @@ dependencies {
     //noinspection GradleDynamicVersion
     implementation project(':UnityExport')
     implementation ':unity-classes'
+    implementation 'com.facebook.react:react-native:+'  // From node_modules
 }
 
 afterEvaluate { project ->

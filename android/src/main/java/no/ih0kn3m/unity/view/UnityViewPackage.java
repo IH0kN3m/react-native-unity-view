@@ -1,4 +1,4 @@
-package no.ih0k3nm.unity.view;
+package no.ih0kn3m.unity.view;
 
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.NativeModule;
