@@ -62,7 +62,7 @@ public class UnityUtils {
                 // start unity
                 addUnityViewToBackground();
                 unityPlayer.windowFocusChanged(true);
-                unityPlayer.getView().requestFocus();
+                unityPlayer.getFrameLayout().requestFocus();
                 unityPlayer.resume();
 
                 // restore window layout
@@ -121,13 +121,13 @@ public class UnityUtils {
         if (unityPlayer == null) {
             return;
         }
-        if (unityPlayer.getView().getParent() != null) {
-            ((ViewGroup) unityPlayer.getView().getParent()).removeView(unityPlayer.getView());
+        if (unityPlayer.getFrameLayout().getParent() != null) {
+            ((ViewGroup) unityPlayer.getFrameLayout().getParent()).removeView(unityPlayer.getFrameLayout());
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            unityPlayer.getView().setZ(-1f);
+            unityPlayer.getFrameLayout().setZ(-1f);
         }
-        final Activity activity = ((Activity) unityPlayer.getContext());
+        final Activity activity = ((Activity) unityPlayer.getFrameLayout().getContext());
         activity.startActivity(activity.getIntent());
     }
 
@@ -135,13 +135,13 @@ public class UnityUtils {
         if (unityPlayer == null) {
             return;
         }
-        if (unityPlayer.getView().getParent() != null) {
-            ((ViewGroup) unityPlayer.getView().getParent()).removeView(unityPlayer.getView());
+        if (unityPlayer.getFrameLayout().getParent() != null) {
+            ((ViewGroup) unityPlayer.getFrameLayout().getParent()).removeView(unityPlayer.getFrameLayout());
         }
         ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT);
-        group.addView(unityPlayer.getView(), 0, layoutParams);
+        group.addView(unityPlayer.getFrameLayout(), 0, layoutParams);
         unityPlayer.windowFocusChanged(true);
-        unityPlayer.getView().requestFocus();
+        unityPlayer.getFrameLayout().requestFocus();
         unityPlayer.resume();
     }
 

@@ -30,7 +30,7 @@ using UnityEditor.iOS.Xcode;
 public static class XcodePostBuild {
     private const string TouchedMarker = "https://github.com/IH0kN3m/react-native-unity-view";
 
-    [PostProcessBuild]
+    [PostProcessBuild(0)]
     public static void OnPostBuild(BuildTarget target, string pathToBuiltProject) {
         if (target != BuildTarget.iOS) {
             return;
