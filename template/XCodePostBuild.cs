@@ -30,7 +30,6 @@ using UnityEditor.iOS.Xcode;
 public static class XcodePostBuild {
     private const string TouchedMarker = "https://github.com/IH0kN3m/react-native-unity-view";
 
-    [PostProcessBuild(0)]
     public static void OnPostBuild(BuildTarget target, string pathToBuiltProject) {
         if (target != BuildTarget.iOS) {
             return;
@@ -197,7 +196,7 @@ public static class XcodePostBuild {
             inScope |= line.Contains("- (void)startUnity:");
             markerDetected |= inScope && line.Contains(TouchedMarker);
 
-            if (!inScope || line.Trim() != "}") return new string[] {line};
+            if (!inScope || line.Trim() != "#endif") return new string[] {line};
             inScope = false;
 
             if (markerDetected) {
@@ -205,9 +204,9 @@ public static class XcodePostBuild {
             }
             else {
                 return new string[] {
+                    "#endif",
                     "    // Modified by " + TouchedMarker,
                     @"    [[NSNotificationCenter defaultCenter] postNotificationName: @""UnityReady"" object:self];",
-                    "}",
                 };
             }
 
