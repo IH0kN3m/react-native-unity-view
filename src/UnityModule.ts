@@ -45,6 +45,16 @@ export interface UnityModule {
     resume (): void;
 
     /**
+     * Unload the unity player
+     */
+    unload (): Promise<boolean>;
+
+    /**
+     * Reload the unity player
+     */
+    reload (): Promise<boolean>;
+
+    /**
      * Receive string and json message from unity.
      */
     addMessageListener (listener: (message: string | MessageHandler) => void): number;
@@ -143,6 +153,14 @@ class UnityModuleImpl implements UnityModule {
 
     public resume () {
         UnityNativeModule.resume()
+    }
+
+    public unload () {
+        return UnityNativeModule.unload()
+    }
+
+    public reload() {
+        return UnityNativeModule.reload()
     }
 
     public addMessageListener (listener: (handler: string | MessageHandler) => void) {

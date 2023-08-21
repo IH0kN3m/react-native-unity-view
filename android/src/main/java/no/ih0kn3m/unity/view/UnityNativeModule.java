@@ -50,6 +50,26 @@ public class UnityNativeModule extends ReactContextBaseJavaModule implements Uni
         UnityUtils.resume();
     }
 
+    @ReactMethod
+    public void unload(final Promise promise) {
+        UnityUtils.unload(getCurrentActivity(), new UnityUtils.CreateCallback() {
+            @Override
+            public void onReady() {
+                promise.resolve(true);
+            }
+        });
+    }
+
+    @ReactMethod
+    public void reload(final Promise promise) {
+        UnityUtils.reload(getCurrentActivity(), new UnityUtils.CreateCallback() {
+            @Override
+            public void onReady() {
+                promise.resolve(true);
+            }
+        });
+    }
+
     @Override
     public void onMessage(String message) {
         ReactContext context = getReactApplicationContext();

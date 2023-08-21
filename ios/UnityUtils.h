@@ -28,6 +28,8 @@ void UnityResumeCommand();
 @interface UnityUtils : NSObject
 
 + (BOOL)isUnityReady;
++ (void)loadCommand:(void (^)(void))completed;
++ (void)unloadCommand:(void (^)(void))completed;
 + (void)createPlayer:(void (^)(void))completed;
 
 @end

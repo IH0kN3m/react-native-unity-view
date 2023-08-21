@@ -57,7 +57,7 @@ public class Build : MonoBehaviour {
         build_text = build_text.Replace("enableSplit = false", "enable false");
         build_text = build_text.Replace("enableSplit = true", "enable true");
         build_text = build_text.Replace("implementation fileTree(dir: 'libs', include: ['*.jar'])", "implementation ':unity-classes'");
-        build_text = build_text.Replace("doNotStrip \"*/arm64-v8a/*.so\"", "doNotStrip \"*/arm64-v8a/*.so\"\nexclude \"lib/arm64-v8a/libc++_shared.so\"\nexclude \"lib/armeabi-v7a/libc++_shared.so\"");
+        build_text = build_text.Replace("doNotStrip \"*/arm64-v8a/*.so\"", "doNotStrip \"*/arm64-v8a/*.so\"\n        exclude \"lib/arm64-v8a/libc++_shared.so\"\n        exclude \"lib/armeabi-v7a/libc++_shared.so\"");
         build_text = build_text.Replace("if (project(':unityLibrary').tasks.findByName('mergeDebugJniLibFolders'))", "if (project(':UnityExport').tasks.findByName('mergeDebugJniLibFolders'))");
         build_text = build_text.Replace("project(':unityLibrary').mergeDebugJniLibFolders.dependsOn BuildIl2CppTask", "project(':UnityExport').mergeDebugJniLibFolders.dependsOn BuildIl2CppTask");
         build_text = build_text.Replace("if (project(':unityLibrary').tasks.findByName('mergeReleaseJniLibFolders'))", "if (project(':UnityExport').tasks.findByName('mergeReleaseJniLibFolders'))");

@@ -43,4 +43,20 @@ RCT_EXPORT_METHOD(resume)
     UnityResumeCommand();
 }
 
+RCT_EXPORT_METHOD(unload:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+{
+    [UnityUtils unloadCommand:^{
+        resolve(@(YES));
+    }];
+}
+
+RCT_EXPORT_METHOD(reload:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+{
+    [UnityUtils loadCommand:^{
+        resolve(@(YES));
+    }];
+}
+
 @end

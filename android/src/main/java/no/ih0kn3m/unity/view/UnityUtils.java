@@ -97,6 +97,25 @@ public class UnityUtils {
         }
     }
 
+    public static void unload(final Activity activity, final CreateCallback callback) {
+        if (unityPlayer == null) {
+            callback.onReady();
+            return;
+        }
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                unityPlayer.unload();
+                _isUnityReady = false;
+                callback.onReady();
+            }
+        });
+    }
+
+    public static void reload(final Activity activity, final CreateCallback callback) {
+        createPlayer(activity, callback);
+    }
+
     /**
      * Invoke by unity C#
      */

@@ -124,9 +124,26 @@ static BOOL _isUnityReady = NO;
     }
 }
 
++ (void)loadCommand:(void (^)(void))completed
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [ufw loadApplication];
+        completed();
+    });
+}
+
++ (void)unloadCommand:(void (^)(void))completed
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [ufw unloadApplication];
+        completed();
+    });
+}
+
 + (void)createPlayer:(void (^)(void))completed
 {
     if (_isUnityReady) {
+        
         completed();
         return;
     }

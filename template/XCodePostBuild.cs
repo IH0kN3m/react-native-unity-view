@@ -30,6 +30,7 @@ using UnityEditor.iOS.Xcode;
 public static class XcodePostBuild {
     private const string TouchedMarker = "https://github.com/IH0kN3m/react-native-unity-view";
 
+    [PostProcessBuild(0)]
     public static void OnPostBuild(BuildTarget target, string pathToBuiltProject) {
         if (target != BuildTarget.iOS) {
             return;
@@ -57,6 +58,7 @@ public static class XcodePostBuild {
         EditUnityAppControllerH(Path.Combine(pathToBuiltProject, "Classes/UnityAppController.h"));
         EditUnityAppControllerMM(Path.Combine(pathToBuiltProject, "Classes/UnityAppController.mm"));
         EditUnityViewMM(Path.Combine(pathToBuiltProject, "Classes/UI/UnityView.mm"));
+        EditUnityMainMM(Path.Combine(pathToBuiltProject, "Classes/main.mm"));
     }
 
     private static void EditUnityFrameworkH(string path) {
@@ -73,6 +75,7 @@ public static class XcodePostBuild {
                 "",
                 "// Added by " + TouchedMarker,
                 "- (void)frameworkWarmup:(int)argc argv:(char*[])argv;",
+                "- (void)loadApplication;",
                 ""
             };
         });
@@ -272,6 +275,36 @@ public static class XcodePostBuild {
                 ""
             };
 
+        });
+    }
+
+private static void EditUnityMainMM(string path) {
+        var inScope = false;
+
+        // Add unity load method
+        EditCodeFile(path, line => {
+            inScope |= line.Contains("UnityUnloadApplication();");
+
+            if (!inScope) return new string[] {line};
+            if (line.Trim() != "") return new string[] {line};
+            inScope = false;
+
+            return new string[] {
+                "",
+                "// Added by " + TouchedMarker,
+                "- (void)loadApplication",
+                "{",
+                "    // initialize from partial unload ( sceneLessMode & onPause )",
+                "    UnityLoadApplicationFromSceneLessState();",
+                "    UnitySuppressPauseMessage();",
+                "    [self pause: false];",
+                "    [self showUnityWindow];",
+                "",
+                "    // Send Unity start event",
+                "    UnitySendEmbeddedLaunchEvent(0);",
+                "}",
+                ""
+            };
         });
     }
 
