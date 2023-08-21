@@ -59,4 +59,12 @@ RCT_EXPORT_METHOD(reload:(RCTPromiseResolveBlock)resolve
     }];
 }
 
+RCT_EXPORT_METHOD(terminate:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+{
+    [UnityUtils terminateCommand:^{
+        resolve(@(YES));
+    }];
+}
+
 @end

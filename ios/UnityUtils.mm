@@ -9,6 +9,7 @@
 static const int constsection = 0;
 
 bool unity_inited = false;
+bool unity_terminated = false;
 
 int g_argc;
 char** g_argv;
@@ -28,12 +29,17 @@ extern "C" bool UnityIsInited()
     return unity_inited;
 }
 
-UnityFramework* UnityFrameworkLoad() {
+NSBundle* UnityFrameworkBundle() {
     NSString* bundlePath = nil;
     bundlePath = [[NSBundle mainBundle] bundlePath];
     bundlePath = [bundlePath stringByAppendingString: @"/Frameworks/UnityFramework.framework"];
 
     NSBundle* bundle = [NSBundle bundleWithPath: bundlePath];
+    return bundle;
+}
+
+UnityFramework* UnityFrameworkLoad() {
+    NSBundle* bundle = UnityFrameworkBundle();
     if ([bundle isLoaded] == false) [bundle load];
 
     UnityFramework* ufw = [bundle.principalClass getInstance];
@@ -126,7 +132,15 @@ static BOOL _isUnityReady = NO;
 
 + (void)loadCommand:(void (^)(void))completed
 {
+    if (unity_terminated) {
+        completed();
+        return;
+    }
+
     dispatch_async(dispatch_get_main_queue(), ^{
+        ufw = UnityFrameworkLoad();
+
+        [ufw setDataBundleId: "com.unity3d.framework"];
         [ufw loadApplication];
         completed();
     });
@@ -134,16 +148,51 @@ static BOOL _isUnityReady = NO;
 
 + (void)unloadCommand:(void (^)(void))completed
 {
+    if (unity_terminated) {
+        completed();
+        return;
+    }
+
     dispatch_async(dispatch_get_main_queue(), ^{
         [ufw unloadApplication];
+
+        ufw = nil;
+        NSBundle* bundle = UnityFrameworkBundle();
+        [bundle unload];
         completed();
+    });
+}
+
++ (void)terminateCommand:(void (^)(void))completed
+{
+    if (unity_terminated) {
+        completed();
+        return;
+    }
+
+    dispatch_async(dispatch_get_main_queue(), ^{
+        // Completely unloads the unity
+        [ufw unloadApplication];
+
+        UIApplication* application = [UIApplication sharedApplication];
+        UnityAppController *controller = GetAppController();
+        [controller applicationWillTerminate:application];
+
+        NSBundle* bundle = UnityFrameworkBundle();
+        [bundle unload];
+        
+        ufw = nil;
+        unity_terminated = true;
     });
 }
 
 + (void)createPlayer:(void (^)(void))completed
 {
+    if (unity_terminated) {
+        completed();
+        return;
+    }
     if (_isUnityReady) {
-        
         completed();
         return;
     }

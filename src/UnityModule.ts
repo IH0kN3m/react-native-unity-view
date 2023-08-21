@@ -55,6 +55,13 @@ export interface UnityModule {
     reload (): Promise<boolean>;
 
     /**
+     * Terminate the unity player
+     * Without being able to reinitialize it
+     * Within the same process.
+     */
+    terminate (): Promise<Boolean>;
+
+    /**
      * Receive string and json message from unity.
      */
     addMessageListener (listener: (message: string | MessageHandler) => void): number;
@@ -161,6 +168,10 @@ class UnityModuleImpl implements UnityModule {
 
     public reload() {
         return UnityNativeModule.reload()
+    }
+
+    public terminate() {
+        return UnityNativeModule.terminate()
     }
 
     public addMessageListener (listener: (handler: string | MessageHandler) => void) {
