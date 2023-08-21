@@ -250,6 +250,33 @@ public static class XcodePostBuild {
             };
 
         });
+
+        inScope = false;
+        markerDetected = false;
+
+        EditCodeFile(path, line => { 
+            inScope |= line.Contains("- (void)applicationWillTerminate:(UIApplication*)application");
+
+            if (!inScope || markerDetected) return new string[] {line};
+            if (line.Trim() != "}") return new string[] {line};
+            inScope = false;
+            markerDetected = true;
+
+            return new string[] {
+                "    }",
+                "}",
+                "",
+                "// Modified by " + TouchedMarker,
+                "- (void)applicationDidReceiveMemoryWarning:(UIApplication *)application",
+                "{",
+                "    ::printf(\"-> applicationDidRecieveMemoryWarning()\");",
+                "",
+                "    if (_unityAppReady)",
+                "    {",
+                "        UnityLowMemory();",
+                "    }"
+            };
+        });
     }
 
     private static void EditUnityViewMM(string path) {
@@ -278,7 +305,7 @@ public static class XcodePostBuild {
         });
     }
 
-private static void EditUnityMainMM(string path) {
+    private static void EditUnityMainMM(string path) {
         var inScope = false;
 
         // Add unity load method
